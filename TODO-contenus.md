@@ -32,7 +32,7 @@
 
 ## `src/pages/mentions-legales.astro`
 - [ ] Compléter tous les `[...]` (voir les questions posées dans la conversation) : nom complet de
-      l'association, siège, RNA, SIRET, affiliation, directeur de la publication, adresse de Netlify,
+      l'association, siège, RNA, SIRET, affiliation, directeur de la publication,
       crédits photos, date de mise à jour
 
 ## Autres
