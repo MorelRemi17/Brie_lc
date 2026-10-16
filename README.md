@@ -73,6 +73,20 @@ Le site est statique : un événement passé ne disparaît de l'accueil qu'au bu
 2. GitHub > Settings > Secrets and variables > Actions > « New repository secret » :
    nom `NETLIFY_BUILD_HOOK`, valeur = l'URL.
 
+### Référencement des pages d'événement
+
+Une page d'événement n'est proposée à Google (balise `robots`, sitemap) **que si elle est complète** : une
+`date` renseignée et plus aucun texte entre crochets `[...]`, ni dans l'en-tête ni dans le texte. Tant qu'il
+reste un `[XX] km`, la page est en ligne et accessible depuis le site, mais en `noindex`, ce qui évite qu'une
+page vide de sens soit indexée. Les liens Markdown `[texte](url)` ne comptent pas comme des placeholders.
+
+Pour qu'un événement ressorte bien dans Google :
+- `date` et `heure` renseignées (l'heure est lue dans le texte : « 8 h », « départs dès 7 h 30 ») ;
+- une `affiche` (elle sert aussi d'image dans les résultats et de miniature sur les réseaux sociaux) ;
+- un `resume` qui dit concrètement ce que c'est (distances, public), et quelques phrases dans le corps du fichier.
+
+Tous les événements, passés compris, sont listés sur `/evenements/`.
+
 ## Actus — `src/content/actus/*.md`
 
 ```markdown
@@ -130,6 +144,10 @@ Il faut Node ≥ 22.22 (`.nvmrc`).
    sitemap, `robots.txt` et balises de partage l'utilisent automatiquement.
 4. Configurer le build quotidien (voir plus haut).
 5. Déclarer le site dans Google Search Console et y soumettre `https://<domaine>/sitemap-index.xml`.
+6. Créer la fiche **Google Business Profile** du club (catégorie « Club de cyclisme », adresse de la salle des
+   fêtes, lien vers le site) : c'est ce qui fait apparaître le club sur Google Maps et dans « club vélo près de moi ».
+7. Après la mise en ligne, tester une page d'événement daté avec l'outil
+   [Résultats enrichis de Google](https://search.google.com/test/rich-results).
 
 ## Structure
 
@@ -143,6 +161,9 @@ src/lib/site.ts             utilitaires : images, dates, tri du calendrier
 src/components/             une section par fichier + Photo (image ou bloc hachuré), Info
 src/pages/index.astro       accueil
 src/pages/evenements/[id].astro   page de chaque événement
+src/pages/evenements/index.astro  archive : tous les événements
+src/pages/404.astro               page introuvable
+src/lib/placeholders.mjs          règle « texte entre crochets » (noindex + sitemap)
 src/pages/mentions-legales.astro
 src/pages/robots.txt.ts
 src/styles/global.css       couleurs du club, styles, responsive

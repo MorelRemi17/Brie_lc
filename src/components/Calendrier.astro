@@ -8,9 +8,12 @@ const url = (id: string) => `/evenements/${id}/`;
 ---
 {(phare || liste.length > 0) && (
   <section class="wrap section section--calendrier" id="calendrier">
-    <div class="titre-bloc">
-      <div class="titre-bloc__kicker">À venir</div>
-      <h2 class="titre-section">Calendrier du club</h2>
+    <div class="section__entete">
+      <div class="titre-bloc">
+        <div class="titre-bloc__kicker">À venir</div>
+        <h2 class="titre-section">Calendrier du club</h2>
+      </div>
+      <a href="/evenements/" class="lien-fleche">Tout le calendrier →</a>
     </div>
 
     {phare && (
@@ -52,7 +55,9 @@ const url = (id: string) => `/evenements/${id}/`;
       <ul class="agenda">
         {liste.map((e) => (
           <li class="agenda__item">
-            <span class="agenda__date">{dateCourte(e.data.date, e.data.dateTexte)}</span>
+            {e.data.date
+              ? <time class="agenda__date" datetime={e.data.date.toISOString().slice(0, 10)}>{dateCourte(e.data.date)}</time>
+              : <span class="agenda__date">{e.data.dateTexte}</span>}
             <div class="agenda__corps">
               <a href={url(e.id)} class="agenda__titre">{e.data.titre}</a>
               {e.data.resume && <span class="agenda__details">{e.data.resume}</span>}

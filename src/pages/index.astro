@@ -11,25 +11,60 @@ import Partenaires from '../components/Partenaires.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import club from '../data/club.json';
-import { aRemplir, lien } from '../lib/site';
+import { getImage } from 'astro:assets';
+import { aRemplir, lien, photo } from '../lib/site';
 
-// Données structurées : le club comme « SportsClub » (aide Google à afficher nom, lieu, réseaux).
+const site = Astro.site!.href;
+const logo = photo('logo.png');
+const logoPng = logo ? await getImage({ src: logo, width: 420, format: 'png' }) : undefined;
+const hero = photo('hero.png');
+const heroJpg = hero ? await getImage({ src: hero, width: hero.width, format: 'jpg' }) : undefined;
+
+// Données structurées (schema.org), en un seul graphe :
+// - WebSite : donne à Google le nom du site à afficher dans les résultats ;
+// - SportsClub : le club, son adresse, ses horaires de sortie, ses réseaux (référencement local).
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'SportsClub',
-  name: club.nom,
-  sport: 'Cyclisme',
-  url: Astro.site?.href,
-  address: { '@type': 'PostalAddress', streetAddress: club.adresse, addressLocality: club.ville, postalCode: club.codePostal, addressCountry: 'FR' },
-  geo: { '@type': 'GeoCoordinates', latitude: club.latitude, longitude: club.longitude },
-  ...(aRemplir(club.email) ? {} : { email: club.email }),
-  ...(aRemplir(club.telephone) ? {} : { telephone: club.telephone }),
-  sameAs: [lien(club.facebook), lien(club.instagram)].filter(Boolean),
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${site}#site`,
+      url: site,
+      name: club.nom,
+      alternateName: ['Brie L.C.', 'Cyclo VTT Brie'],
+      inLanguage: 'fr-FR',
+      publisher: { '@id': `${site}#club` },
+    },
+    {
+      '@type': 'SportsClub',
+      '@id': `${site}#club`,
+      name: club.nom,
+      alternateName: 'Brie L.C.',
+      description: `Club de cyclotourisme et de VTT de ${club.ville}, près d'${club.pres} (${club.departement}).`,
+      sport: ['Cyclisme sur route', 'VTT', 'Gravel'],
+      url: site,
+      ...(logoPng ? { logo: new URL(logoPng.src, site).href } : {}),
+      ...(heroJpg ? { image: new URL(heroJpg.src, site).href } : {}),
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: club.adresse,
+        addressLocality: club.ville,
+        postalCode: club.codePostal,
+        addressRegion: club.region,
+        addressCountry: 'FR',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: club.latitude, longitude: club.longitude },
+      areaServed: [club.ville, club.pres, club.departement],
+      ...(aRemplir(club.email) ? {} : { email: club.email }),
+      ...(aRemplir(club.telephone) ? {} : { telephone: club.telephone }),
+      sameAs: [lien(club.facebook), lien(club.instagram)].filter(Boolean),
+    },
+  ],
 };
 ---
 <Base
-  title="Cyclo VTT Brie L.C. — Club cyclo de Brie"
-  description="Club cyclo de Brie : sortie route tous les dimanches matin au départ de la salle des fêtes, sorties gravel et VTT, Les Boucles de la Braconne."
+  title={`${club.nom} – Club cyclo et VTT à ${club.ville} (${club.departement})`}
+  description={`Club cyclo et VTT de ${club.ville}, près d'${club.pres} : sortie route le dimanche à ${club.horaireEte} (été) ou ${club.horaireHiver} (hiver), sorties gravel et VTT, Boucles de la Braconne.`}
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <Header />

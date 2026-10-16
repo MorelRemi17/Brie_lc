@@ -147,6 +147,7 @@ a.info__valeur:hover { color: var(--vert-fonce); }
 }
 .hero__contenu { position: relative; z-index: 2; width: 100%; padding-top: 80px; padding-bottom: 80px; }
 .hero__col { display: flex; flex-direction: column; gap: 14px; max-width: 640px; }
+.hero__h1 { margin: 0; display: flex; flex-direction: column; gap: 14px; font-weight: 400; }
 .hero__kicker { font: 400 30px var(--f-script); color: var(--vert-clair); }
 .hero__titre {
   margin: 0; align-self: flex-start;
@@ -284,14 +285,31 @@ a.logo-partenaire:hover { border-color: var(--vert); color: var(--blanc); }
    ============================================================ */
 .footer { background: var(--vert); color: var(--blanc); }
 .footer__inner { padding-top: 22px; padding-bottom: 22px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; font: 600 14px var(--f-texte); }
+.footer__adresse { font-style: normal; }
+.footer__liens { display: flex; flex-wrap: wrap; gap: 20px; }
 .footer a { color: var(--blanc); }
 .footer a:hover { text-decoration: underline; }
+
+/* ---------- En-tête de section avec lien à droite ---------- */
+.section__entete { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: flex-end; }
+.lien-fleche { font: 700 15px var(--f-texte); text-transform: uppercase; color: var(--vert-fonce); }
+
+/* ---------- Fil d'Ariane ---------- */
+.fil-ariane ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; font: 600 14px var(--f-texte); color: var(--gris); }
+.fil-ariane li + li::before { content: '›'; margin-right: 6px; color: var(--vert); }
+.fil-ariane a { color: var(--vert-fonce); }
+.fil-ariane [aria-current] { color: var(--noir); }
+
+/* ---------- Archive des événements / 404 ---------- */
+.archive { gap: 32px; }
+.archive__bloc { display: flex; flex-direction: column; gap: 8px; }
+.archive__titre { margin: 0; font: 400 30px var(--f-marker); color: var(--vert-fonce); }
+.page-404__texte { margin: 0; font: 500 18px/1.6 var(--f-texte); color: var(--texte); max-width: 620px; }
 
 /* ============================================================
    PAGE ÉVÉNEMENT
    ============================================================ */
 .evenement { padding-top: 48px; padding-bottom: 80px; display: flex; flex-direction: column; gap: 28px; }
-.evenement__retour { font: 700 15px var(--f-texte); text-transform: uppercase; color: var(--vert-fonce); align-self: flex-start; }
 .evenement__grille { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 48px; align-items: start; }
 .evenement__affiche { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border: 3px solid var(--noir); }
 .evenement__corps { display: flex; flex-direction: column; gap: 20px; }

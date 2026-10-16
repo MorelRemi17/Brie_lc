@@ -1,9 +1,16 @@
 ---
+import club from '../data/club.json';
+
 const annee = new Date().getFullYear();
 ---
 <footer class="footer">
   <div class="wrap footer__inner">
-    <span>© {annee} Cyclo VTT Brie L.C.</span>
-    <a href="/mentions-legales/">Mentions légales</a>
+    <address class="footer__adresse">
+      © {annee} {club.nom} · {club.lieuRdv}, {club.adresse}, {club.codePostal} {club.ville}
+    </address>
+    <nav class="footer__liens" aria-label="Liens de pied de page">
+      <a href="/evenements/">Tous les événements</a>
+      <a href="/mentions-legales/">Mentions légales</a>
+    </nav>
   </div>
 </footer>

@@ -1,12 +1,16 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import Photo from '../../components/Photo.astro';
 import Info from '../../components/Info.astro';
 import club from '../../data/club.json';
-import { photo, lien, externe, dateJour, isoDate, type Evenement } from '../../lib/site';
+import {
+  photo, lien, externe, dateJour, dateLongue, isoDate, isoDateHeure, estPasse, aIndexer, localite, resumer,
+  type Evenement,
+} from '../../lib/site';
 
 // Une page par fichier de src/content/evenements/ (y compris les événements passés).
 export async function getStaticPaths() {
@@ -20,44 +24,78 @@ const { Content } = await render(e);
 const affiche = photo(d.affiche);
 const inscription = lien(d.lienInscription);
 const parcours = lien(d.lienParcours);
-const passe = d.date ? d.date.getTime() < Date.now() - 86400000 : false;
+const passe = estPasse(e);
+const auDepart = d.lieu === club.lieuRdv;
+const site = Astro.site!.href;
+const url = new URL(Astro.url.pathname, site).href;
 
-const description =
-  d.resume ?? `${d.type} organisée par ${club.nom}, au départ de : ${d.lieu}.`;
+// Titre (≈ 60 caractères visibles dans Google) : nom de l'événement + date, puis le club.
+const title = `${d.titre}${d.date ? ` – ${dateLongue(d.date)}` : ''} | ${club.nom}`;
+// Description : type, date, lieu, commune, puis le résumé.
+const description = resumer(
+  `${d.type}${d.date ? ` le ${dateJour(d.date)}` : ''} ${localite}. Départ : ${d.lieu}. ${d.resume ?? `Organisé par ${club.nom}.`}`
+);
 
-// Données structurées Event : permettent d'apparaître dans les résultats « événements » de Google.
-// startDate est obligatoire : on ne les publie que si la date est renseignée.
-const jsonLd = d.date && {
+const afficheJpg = affiche ? await getImage({ src: affiche, width: Math.min(1200, affiche.width), format: 'jpg' }) : undefined;
+const adresse = auDepart
+  ? { '@type': 'PostalAddress', streetAddress: club.adresse, addressLocality: club.ville, postalCode: club.codePostal, addressRegion: club.region, addressCountry: 'FR' }
+  : { '@type': 'PostalAddress', addressLocality: club.ville, postalCode: club.codePostal, addressRegion: club.region, addressCountry: 'FR' };
+
+// Données structurées : fil d'Ariane + Event (seulement si la date est connue, startDate étant obligatoire).
+const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Event',
-  name: d.titre,
-  startDate: isoDate(d.date),
-  eventStatus: 'https://schema.org/EventScheduled',
-  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-  description,
-  // Départ habituel (salle des fêtes) : adresse précise et coordonnées ; sinon, seulement la commune.
-  location: d.lieu === club.lieuRdv
-    ? {
-        '@type': 'Place',
-        name: d.lieu,
-        address: { '@type': 'PostalAddress', streetAddress: club.adresse, addressLocality: club.ville, postalCode: club.codePostal, addressCountry: 'FR' },
-        geo: { '@type': 'GeoCoordinates', latitude: club.latitude, longitude: club.longitude },
-      }
-    : {
-        '@type': 'Place',
-        name: d.lieu,
-        address: { '@type': 'PostalAddress', addressLocality: club.ville, postalCode: club.codePostal, addressCountry: 'FR' },
-      },
-  organizer: { '@type': 'SportsClub', name: club.nom, url: Astro.site?.href },
-  ...(affiche ? { image: [new URL(affiche.src, Astro.site).href] } : {}),
-  ...(inscription ? { offers: { '@type': 'Offer', url: inscription } } : {}),
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: site },
+        { '@type': 'ListItem', position: 2, name: 'Événements', item: new URL('/evenements/', site).href },
+        { '@type': 'ListItem', position: 3, name: d.titre, item: url },
+      ],
+    },
+    ...(d.date
+      ? [{
+          '@type': 'Event',
+          '@id': `${url}#evenement`,
+          name: d.titre,
+          url,
+          startDate: isoDateHeure(d.date, d.heure),
+          endDate: isoDate(d.date),
+          eventStatus: 'https://schema.org/EventScheduled',
+          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+          description,
+          location: {
+            '@type': 'Place',
+            name: d.lieu,
+            address: adresse,
+            ...(auDepart ? { geo: { '@type': 'GeoCoordinates', latitude: club.latitude, longitude: club.longitude } } : {}),
+          },
+          organizer: { '@type': 'SportsClub', '@id': `${site}#club`, name: club.nom, url: site },
+          ...(afficheJpg ? { image: [new URL(afficheJpg.src, site).href] } : {}),
+          ...(inscription ? { offers: { '@type': 'Offer', url: inscription, availability: 'https://schema.org/InStock' } } : {}),
+        }]
+      : []),
+  ],
 };
 ---
-<Base title={`${d.titre} — ${club.nom}`} description={description} image={affiche} ogType="article">
-  {jsonLd && <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+<Base
+  title={title}
+  description={description}
+  image={affiche}
+  imageAlt={`Affiche : ${d.titre}`}
+  ogType="article"
+  noindex={!aIndexer(e)}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <Header />
   <main class="wrap evenement">
-    <a href="/#calendrier" class="evenement__retour">← Calendrier du club</a>
+    <nav class="fil-ariane" aria-label="Fil d'Ariane">
+      <ol>
+        <li><a href="/">Accueil</a></li>
+        <li><a href="/evenements/">Événements</a></li>
+        <li aria-current="page">{d.titre}</li>
+      </ol>
+    </nav>
     <div class="evenement__grille">
       <Photo src={affiche} alt={`Affiche : ${d.titre}`} class="evenement__affiche" aVenir="affiche de l'événement" widths={[400, 800]} sizes="(max-width: 960px) 100vw, 380px" prioritaire />
       <div class="evenement__corps">
@@ -69,11 +107,11 @@ const jsonLd = d.date && {
         <h1 class="phare__titre">{d.titre}</h1>
         <div class="phare__infos">
           <Info label="Date">
-            {d.date ? <time datetime={isoDate(d.date)}>{dateJour(d.date)}</time> : d.dateTexte}
+            {d.date ? <time datetime={isoDateHeure(d.date, d.heure)}>{dateJour(d.date)}</time> : d.dateTexte}
           </Info>
           {d.heure && <Info label="Heure">{d.heure}</Info>}
           <Info label="Lieu de départ">
-            {d.lieu}{d.lieu === club.lieuRdv && <><br />{club.adresse}, {club.codePostal} {club.ville}</>}
+            {d.lieu}{auDepart && <><br />{club.adresse}, {club.codePostal} {club.ville}</>}
           </Info>
           {d.infos.map((i) => <Info label={i.label}>{i.valeur}</Info>)}
         </div>

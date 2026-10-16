@@ -1,5 +1,7 @@
 import type { ImageMetadata } from 'astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { contientPlaceholder } from './placeholders.mjs';
+import club from '../data/club.json';
 
 // ---------- Valeurs « à remplir » ----------
 
@@ -80,6 +82,24 @@ export const dateCourte = (d?: Date, defaut = '[date]') => (d ? fmtCourt.format(
 export const dateJour = (d?: Date, defaut = '[date]') => (d ? fmtJour.format(d) : defaut);
 export const isoDate = (d: Date) => d.toISOString().slice(0, 10);
 
+/**
+ * Date ISO 8601 avec l'heure et le fuseau de Paris si l'heure est lisible dans le texte
+ * (« 8 h », « départs dès 7 h 30 », « 9h15 ») ; sinon la date seule.
+ * Ex. 2027-03-14 + « départs dès 7 h 30 » → 2027-03-14T07:30:00+01:00
+ */
+export function isoDateHeure(d: Date, heure?: string) {
+  const m = heure?.match(/(\d{1,2})\s*h\s*(\d{2})?/i);
+  if (!m) return isoDate(d);
+  const hh = m[1].padStart(2, '0');
+  const mm = m[2] ?? '00';
+  // Décalage horaire de Paris ce jour-là (+01:00 en hiver, +02:00 en été)
+  const instant = new Date(`${isoDate(d)}T12:00:00Z`);
+  const nom = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Paris', timeZoneName: 'longOffset' })
+    .formatToParts(instant).find((p) => p.type === 'timeZoneName')?.value ?? 'GMT+01:00';
+  const decalage = nom.replace('GMT', '') || '+00:00';
+  return `${isoDate(d)}T${hh}:${mm}:00${decalage}`;
+}
+
 // ---------- Événements ----------
 
 export type Evenement = CollectionEntry<'evenements'>;
@@ -88,6 +108,36 @@ export type Evenement = CollectionEntry<'evenements'>;
 function aujourdhui() {
   const n = new Date();
   return new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate()));
+}
+
+/** Tous les événements, du plus récent au plus ancien (archive). */
+export async function tousEvenements() {
+  return (await getCollection('evenements'))
+    .sort((a, b) => (b.data.date?.getTime() ?? Infinity) - (a.data.date?.getTime() ?? Infinity) || a.id.localeCompare(b.id));
+}
+
+export function estPasse(e: Evenement) {
+  return e.data.date ? e.data.date.getTime() < aujourdhui().getTime() : false;
+}
+
+/**
+ * Une page encore pleine de « [XX] » ne doit pas être indexée par Google (contenu vide de sens).
+ * Même règle que le filtre du sitemap dans astro.config.mjs.
+ */
+export function aIndexer(e: Evenement) {
+  // dateTexte vaut « [date] » par défaut : on l'ignore, c'est la vraie date qui compte.
+  const { dateTexte: _ignore, ...champs } = e.data;
+  return !!e.data.date && !contientPlaceholder(JSON.stringify(champs)) && !contientPlaceholder(e.body);
+}
+
+/** Texte court pour les titres et descriptions : « à Brie (Charente) » */
+export const localite = `à ${club.ville} (${club.departement})`;
+
+/** Coupe proprement à ~160 caractères pour une meta description. */
+export function resumer(texte: string, max = 160) {
+  const t = texte.replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  return t.slice(0, t.lastIndexOf(' ', max - 1)).replace(/[ ,;:·–-]+$/, '') + '…';
 }
 
 /**

@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import club from '../../data/club.json';
+import { tousEvenements, estPasse, dateCourte, dateLongue } from '../../lib/site';
+
+// Archive : tous les événements, à venir puis passés. Garde un lien vers chaque page
+// d'événement même quand il a disparu de l'accueil (sinon page « orpheline » pour Google).
+const tous = await tousEvenements();
+const aVenir = tous.filter((e) => !estPasse(e)).reverse();
+const passes = tous.filter((e) => estPasse(e));
+const url = (id: string) => `/evenements/${id}/`;
+---
+<Base
+  title={`Calendrier et événements – ${club.nom}`}
+  description={`Toutes les sorties et randonnées du club ${club.nom} à ${club.ville} (${club.departement}) : événements à venir et archives des éditions passées.`}
+>
+  <Header />
+  <main class="wrap section archive">
+    <nav class="fil-ariane" aria-label="Fil d'Ariane">
+      <ol>
+        <li><a href="/">Accueil</a></li>
+        <li aria-current="page">Événements</li>
+      </ol>
+    </nav>
+    <div class="titre-bloc">
+      <div class="titre-bloc__kicker">Sorties &amp; randonnées</div>
+      <h1 class="titre-section">Calendrier du club</h1>
+    </div>
+
+    {[{ titre: 'À venir', liste: aVenir }, { titre: 'Événements passés', liste: passes }].map((bloc) =>
+      bloc.liste.length > 0 && (
+        <section class="archive__bloc">
+          <h2 class="archive__titre">{bloc.titre}</h2>
+          <ul class="agenda">
+            {bloc.liste.map((e) => (
+              <li class="agenda__item">
+                {e.data.date
+                  ? <time class="agenda__date" datetime={e.data.date.toISOString().slice(0, 10)} title={dateLongue(e.data.date)}>{dateCourte(e.data.date)}</time>
+                  : <span class="agenda__date">{e.data.dateTexte}</span>}
+                <div class="agenda__corps">
+                  <a href={url(e.id)} class="agenda__titre">{e.data.titre}</a>
+                  <span class="agenda__details">{e.data.resume ?? `${e.data.type} · ${e.data.lieu}`}</span>
+                </div>
+                <a href={url(e.id)} class="agenda__lien" aria-label={`Détails : ${e.data.titre}`}>Détails →</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    )}
+  </main>
+  <Footer />
+</Base>

@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base title="Page introuvable – Cyclo VTT Brie L.C." description="Cette page n'existe pas ou plus." noindex>
+  <Header />
+  <main class="wrap section page-404">
+    <div class="titre-bloc">
+      <div class="titre-bloc__kicker">Crevaison !</div>
+      <h1 class="titre-section">Page introuvable</h1>
+    </div>
+    <p class="page-404__texte">Cette page n'existe pas ou plus. L'événement que tu cherches est peut-être dans le calendrier.</p>
+    <div class="hero__ctas">
+      <a href="/" class="btn">Retour à l'accueil</a>
+      <a href="/evenements/" class="btn-ligne">Voir le calendrier</a>
+    </div>
+  </main>
+  <Footer />
+</Base>

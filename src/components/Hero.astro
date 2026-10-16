@@ -11,7 +11,7 @@ const lieu = club.lieuRdv.charAt(0).toLowerCase() + club.lieuRdv.slice(1);
   {hero && (
     <Image
       src={hero}
-      alt=""
+      alt="Cyclistes du club Brie L.C. en maillot vert et noir, en sortie sur une petite route de campagne"
       class="hero__fond"
       widths={largeurs(hero, [640, 1024, 1600, 2400])}
       sizes="100vw"
@@ -21,8 +21,10 @@ const lieu = club.lieuRdv.charAt(0).toLowerCase() + club.lieuRdv.slice(1);
   )}
   <div class="wrap hero__contenu">
     <div class="hero__col">
-      <div class="hero__kicker">Club cyclo de Brie</div>
-      <h1 class="hero__titre">Roulez avec<br />Brie L.C.</h1>
+      <h1 class="hero__h1">
+        <span class="hero__kicker">Club cyclo de Brie</span>
+        <span class="hero__titre">Roulez avec<br />Brie L.C.</span>
+      </h1>
       <p class="hero__texte">
         Sortie route tous les dimanches matin au départ de la {lieu}. Tous niveaux, dans la bonne humeur.
       </p>
