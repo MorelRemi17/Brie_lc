@@ -4,6 +4,8 @@ import { photo, largeurs } from '../lib/site';
 import club from '../data/club.json';
 
 const hero = photo('hero.png');
+// « Salle des fêtes de Brie » → « salle des fêtes de Brie » (seule l'initiale passe en minuscule)
+const lieu = club.lieuRdv.charAt(0).toLowerCase() + club.lieuRdv.slice(1);
 ---
 <section class="hero" id="accueil">
   {hero && (
@@ -22,7 +24,7 @@ const hero = photo('hero.png');
       <div class="hero__kicker">Club cyclo de Brie</div>
       <h1 class="hero__titre">Roulez avec<br />Brie L.C.</h1>
       <p class="hero__texte">
-        Sortie route tous les dimanches matin au départ de la {club.lieuRdv.toLowerCase()}. Tous niveaux, dans la bonne humeur.
+        Sortie route tous les dimanches matin au départ de la {lieu}. Tous niveaux, dans la bonne humeur.
       </p>
       <div class="hero__ctas">
         <a href="/#rejoindre" class="btn">Viens essayer un dimanche</a>

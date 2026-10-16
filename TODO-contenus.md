@@ -1,15 +1,13 @@
 # Contenus à fournir
 
-## Avant tout : les 3 images de la maquette
-
-L'outil d'import Claude Design limite les fichiers à 256 Kio : les images n'ont pas pu être récupérées
-automatiquement. À exporter depuis claude.ai/design (projet « Site Brie LC », dossier `assets/`) :
-
-- [ ] `src/assets/photos/logo.png` — logo du club (header, favicon). En attendant : « Brie L.C. » en texte.
-- [ ] `src/assets/photos/hero.png` — photo du bandeau d'accueil (et image de partage sur les réseaux)
-- [ ] `src/assets/photos/affiche-ag.jpg` — affiche de l'AG (actu du 19/09/2026)
-- [ ] (facultatif) copier aussi `hero.png` dans `src/assets/galerie/`, sous un nom comme
-      `2026-09-01-sortie-club.png`, si tu veux la retrouver en 1re photo de la galerie comme sur la maquette
+## Images
+- [x] `logo.png`, `hero.png`, `affiche-ag.jpg` déposées dans `src/assets/photos/` (16/10/2026)
+- [ ] **Photo du hero en meilleure résolution** : `hero.png` ne fait que 760 × 380 px et paraît floue en plein
+      écran. Idéalement 2400 px de large au moins, en JPG (la photo d'origine plutôt que l'export de la maquette).
+      Il suffit de remplacer `src/assets/photos/hero.png`, ou de déposer `hero.jpg` et de changer le nom
+      dans `src/components/Hero.astro` et `src/layouts/Base.astro`.
+- [ ] (facultatif) copier aussi la photo du hero dans `src/assets/galerie/`, sous un nom comme
+      `2026-09-01-sortie-club.jpg`, pour la retrouver en 1re photo de la galerie comme sur la maquette
 
 ## `src/data/club.json`
 - [ ] `telephone` : `[06 XX XX XX XX]`
