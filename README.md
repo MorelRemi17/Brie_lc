@@ -146,7 +146,8 @@ Il faut Node ≥ 22.22 (`.nvmrc`).
 5. Déclarer le site dans Google Search Console et y soumettre `https://<domaine>/sitemap-index.xml`.
    Le site est déclaré en propriété « Préfixe d'URL » `https://brielc.netlify.app/` : une propriété « Domaine »
    est impossible, car le DNS de `netlify.app` appartient à Netlify. La validation se fait par le fichier
-   `public/googleb1b4dc2e88cec1fe.html`. **Ne pas le supprimer**, sinon Google retire l'accès. Avec un vrai
+   `public/googleb1b4dc2e88cec1fe.html` et par la balise `google-site-verification` de `src/layouts/Base.astro`.
+   **Ne supprimer ni l'un ni l'autre**, sinon Google retire l'accès. Avec un vrai
    nom de domaine, il faudra déclarer une nouvelle propriété.
 6. Créer la fiche **Google Business Profile** du club (catégorie « Club de cyclisme », adresse de la salle des
    fêtes, lien vers le site) : c'est ce qui fait apparaître le club sur Google Maps et dans « club vélo près de moi ».
