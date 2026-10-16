@@ -35,11 +35,19 @@ const jsonLd = d.date && {
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   description,
-  location: {
-    '@type': 'Place',
-    name: d.lieu,
-    address: { '@type': 'PostalAddress', addressLocality: club.ville, postalCode: club.codePostal, addressCountry: 'FR' },
-  },
+  // Départ habituel (salle des fêtes) : adresse précise et coordonnées ; sinon, seulement la commune.
+  location: d.lieu === club.lieuRdv
+    ? {
+        '@type': 'Place',
+        name: d.lieu,
+        address: { '@type': 'PostalAddress', streetAddress: club.adresse, addressLocality: club.ville, postalCode: club.codePostal, addressCountry: 'FR' },
+        geo: { '@type': 'GeoCoordinates', latitude: club.latitude, longitude: club.longitude },
+      }
+    : {
+        '@type': 'Place',
+        name: d.lieu,
+        address: { '@type': 'PostalAddress', addressLocality: club.ville, postalCode: club.codePostal, addressCountry: 'FR' },
+      },
   organizer: { '@type': 'SportsClub', name: club.nom, url: Astro.site?.href },
   ...(affiche ? { image: [new URL(affiche.src, Astro.site).href] } : {}),
   ...(inscription ? { offers: { '@type': 'Offer', url: inscription } } : {}),
@@ -64,7 +72,9 @@ const jsonLd = d.date && {
             {d.date ? <time datetime={isoDate(d.date)}>{dateJour(d.date)}</time> : d.dateTexte}
           </Info>
           {d.heure && <Info label="Heure">{d.heure}</Info>}
-          <Info label="Lieu de départ">{d.lieu}</Info>
+          <Info label="Lieu de départ">
+            {d.lieu}{d.lieu === club.lieuRdv && <><br />{club.adresse}, {club.codePostal} {club.ville}</>}
+          </Info>
           {d.infos.map((i) => <Info label={i.label}>{i.valeur}</Info>)}
         </div>
         {(inscription || parcours) && !passe && (

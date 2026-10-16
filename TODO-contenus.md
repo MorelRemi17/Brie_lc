@@ -17,7 +17,6 @@ automatiquement. À exporter depuis claude.ai/design (projet « Site Brie LC »,
 - [ ] `telephonePresident` : `[téléphone du président]`
 - [ ] `email` : `[email du club]`
 - [ ] `facebook`, `instagram` : URL (vides aujourd'hui)
-- [ ] vérifier `codePostal` : `16590` (Brie, Charente)
 
 ## `src/content/evenements/`
 - [ ] `boucles-braconne-2027.md` : `date` (à décommenter), heure, tarif, distances, ravitos, affiche,
@@ -39,6 +38,4 @@ automatiquement. À exporter depuis claude.ai/design (projet « Site Brie LC »,
       crédits photos, date de mise à jour
 
 ## Autres
-- [ ] `src/components/Contact.astro` : vérifier que la carte OpenStreetMap pointe sur la salle des fêtes
-      (coordonnées reprises de la maquette : 45.735, 0.26)
 - [ ] Netlify : build hook + secret GitHub `NETLIFY_BUILD_HOOK` (voir README)

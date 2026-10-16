@@ -104,7 +104,8 @@ Les 3 actus les plus récentes sont affichées sur l'accueil.
 JSON = guillemets droits `"`, virgule entre les éléments mais pas après le dernier. Une valeur vide `""` ou
 entre crochets `"[...]"` est considérée comme à remplir : le lien correspondant n'est pas cliquable.
 
-`club.json` : `telephone`, `contactNom`, `telephonePresident`, `email`, `lieuRdv`, `ville`, `codePostal`,
+`club.json` : `telephone`, `contactNom`, `telephonePresident`, `email`, `lieuRdv`, `adresse`, `ville`, `codePostal`,
+`latitude` / `longitude` (centre de la carte et données structurées),
 `horaireEte`, `horaireHiver`, `facebook`, `instagram` (URL complète).
 
 `partenaires.json` : `[{ "nom": "Vélo Shop", "logo": "velo-shop.png", "lien": "https://…" }]`, avec le logo dans

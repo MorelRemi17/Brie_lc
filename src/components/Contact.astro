@@ -7,13 +7,18 @@ const reseaux = [
   { nom: 'Instagram', href: lien(club.instagram) },
 ];
 const mail = mailHref(club.email);
+// Carte OpenStreetMap centrée sur le lieu de rendez-vous (coordonnées : Base Adresse Nationale)
+const { latitude: lat, longitude: lon } = club;
+const bbox = [lon - 0.012, lat - 0.006, lon + 0.012, lat + 0.006].map((n) => n.toFixed(6)).join('%2C');
+const carte = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lon}`;
+const carteGrande = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon}`;
 const tel = telHref(club.telephonePresident);
 ---
 <section class="wrap contact" id="contact">
   <div class="contact__texte">
     <h2 class="titre-section">Contact</h2>
     <p class="contact__adresse">
-      {club.lieuRdv}<br />Rendez-vous le dimanche à {club.horaireEte} en été, {club.horaireHiver} en hiver
+      {club.lieuRdv}<br />{club.adresse}, {club.codePostal} {club.ville}<br />Rendez-vous le dimanche à {club.horaireEte} en été, {club.horaireHiver} en hiver
     </p>
     <div class="contact__coord">
       {mail ? <a href={mail}>{club.email}</a> : <span>{club.email}</span>}
@@ -23,10 +28,13 @@ const tel = telHref(club.telephonePresident);
       {reseaux.map((r) => <a href={r.href ?? '#'} {...externe(r.href)}>{r.nom}</a>)}
     </div>
   </div>
-  <iframe
-    class="carte-osm"
-    title={`Carte : ${club.ville}`}
-    loading="lazy"
-    src="https://www.openstreetmap.org/export/embed.html?bbox=0.225%2C45.715%2C0.295%2C45.755&layer=mapnik&marker=45.735%2C0.26"
-  ></iframe>
+  <div class="contact__carte">
+    <iframe
+      class="carte-osm"
+      title={`Carte : ${club.lieuRdv}, ${club.adresse}, ${club.ville}`}
+      loading="lazy"
+      src={carte}
+    ></iframe>
+    <a href={carteGrande} class="contact__carte-lien" target="_blank" rel="noopener">Agrandir la carte →</a>
+  </div>
 </section>
