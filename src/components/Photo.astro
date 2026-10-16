@@ -1,0 +1,36 @@
+---
+/*
+ * Image optimisée par Astro si le fichier existe, sinon bloc hachuré « à venir »
+ * (même rendu que les emplacements photo de la maquette).
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { largeurs } from '../lib/site';
+
+interface Props {
+  src?: ImageMetadata;
+  alt: string;
+  class?: string;
+  /** texte du bloc hachuré quand l'image manque */
+  aVenir?: string;
+  widths?: number[];
+  sizes?: string;
+  cadrage?: string;
+  prioritaire?: boolean;
+}
+const { src, alt, class: classe, aVenir, widths = [400, 800, 1200], sizes = '(max-width: 680px) 100vw, 33vw', cadrage, prioritaire = false } = Astro.props;
+---
+{src ? (
+  <Image
+    src={src}
+    alt={alt}
+    class={classe}
+    widths={largeurs(src, widths)}
+    sizes={sizes}
+    style={cadrage ? `object-position:${cadrage}` : undefined}
+    loading={prioritaire ? 'eager' : 'lazy'}
+    fetchpriority={prioritaire ? 'high' : undefined}
+  />
+) : (
+  <div class:list={[classe, 'placeholder']} role="img" aria-label={aVenir ?? alt}>{aVenir ?? alt}</div>
+)}

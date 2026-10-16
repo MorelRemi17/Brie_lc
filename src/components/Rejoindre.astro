@@ -1,0 +1,26 @@
+---
+import Info from './Info.astro';
+import club from '../data/club.json';
+import { telHref, mailHref } from '../lib/site';
+---
+<section class="rejoindre" id="rejoindre">
+  <div class="wrap rejoindre__inner">
+    <div class="rejoindre__texte">
+      <div class="rejoindre__kicker">Envie de nous rejoindre ?</div>
+      <h2 class="rejoindre__titre">Ta première sortie est offerte</h2>
+      <p class="rejoindre__p">
+        Viens rouler avec nous un dimanche matin, sans engagement. Préviens-nous avant, on t'intègre dans le bon groupe et on t'explique tout sur la licence.
+      </p>
+    </div>
+    <div class="carte-contact">
+      <h3 class="carte-contact__titre">Contacte-nous avant ta sortie découverte</h3>
+      <Info label="Téléphone" href={telHref(club.telephone)} fort>
+        {club.telephone}{club.contactNom ? ` · ${club.contactNom}` : ''}
+      </Info>
+      <Info label="E-mail" href={mailHref(club.email)} fort>{club.email}</Info>
+      <Info label="Rendez-vous">
+        {club.lieuRdv} · dim. {club.horaireEte} (été) / {club.horaireHiver} (hiver)
+      </Info>
+    </div>
+  </div>
+</section>

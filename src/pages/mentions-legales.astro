@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// Les valeurs entre crochets sont à compléter (voir TODO-contenus.md).
+const maj = '[date de mise à jour]';
+---
+<Base
+  title="Mentions légales — Cyclo VTT Brie L.C."
+  description="Mentions légales et politique de confidentialité du site du club Cyclo VTT Brie L.C."
+>
+  <Header />
+  <main class="wrap legal">
+    <div class="titre-bloc">
+      <div class="titre-bloc__kicker">Infos pratiques</div>
+      <h1 class="titre-section">Mentions légales</h1>
+    </div>
+    <p class="legal__maj">Dernière mise à jour : {maj}</p>
+
+    <section>
+      <h2>1. Éditeur du site</h2>
+      <p>
+        Le site <strong>[adresse du site]</strong> est édité par l'association
+        <strong>Cyclo VTT Brie L.C.</strong> ([nom complet de l'association]), association régie par la loi du
+        1<sup>er</sup> juillet 1901.
+      </p>
+      <ul>
+        <li>Siège social : [adresse du siège]</li>
+        <li>Numéro RNA : [W…]</li>
+        <li>SIRET : [n° SIRET, si l'association en a un]</li>
+        <li>Affiliation : [fédération, n° d'affiliation]</li>
+        <li>E-mail : [email du club]</li>
+        <li>Téléphone : [téléphone]</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Directeur de la publication</h2>
+      <p>[Prénom Nom], [président·e] de l'association.</p>
+    </section>
+
+    <section>
+      <h2>3. Hébergement</h2>
+      <p>
+        Le site est hébergé par <strong>Netlify, Inc.</strong>, [adresse de Netlify, à vérifier dans ses conditions
+        d'utilisation], États-Unis — <a href="https://www.netlify.com" target="_blank" rel="noopener">www.netlify.com</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>4. Propriété intellectuelle</h2>
+      <p>
+        Le logo, les textes et les photographies publiés sur ce site appartiennent à l'association ou à leurs
+        auteurs respectifs. Toute reproduction sans autorisation est interdite.
+      </p>
+      <p>Crédits photos : [crédits photos].</p>
+      <p>
+        Les personnes qui apparaissent sur les photos peuvent demander leur retrait à tout moment en écrivant à
+        [email du club].
+      </p>
+    </section>
+
+    <section>
+      <h2>5. Données personnelles</h2>
+      <p>
+        Ce site ne propose ni formulaire, ni création de compte : il ne collecte pas de données personnelles par
+        lui-même. Si vous contactez le club par e-mail ou par téléphone, vos coordonnées servent uniquement à vous
+        répondre et ne sont transmises à personne.
+      </p>
+      <p>
+        Responsable du traitement : l'association Cyclo VTT Brie L.C., représentée par [Prénom Nom].
+        Conformément au Règlement général sur la protection des données (RGPD) et à la loi Informatique et
+        Libertés, vous disposez d'un droit d'accès, de rectification, d'effacement et d'opposition sur vos
+        données. Pour l'exercer : [email du club]. Vous pouvez aussi adresser une réclamation à la
+        <a href="https://www.cnil.fr" target="_blank" rel="noopener">CNIL</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>6. Cookies et services tiers</h2>
+      <p>
+        Ce site ne dépose aucun cookie publicitaire ni de mesure d'audience. Les polices de caractères sont
+        hébergées sur le site lui-même.
+      </p>
+      <p>Il fait appel à des services tiers qui reçoivent, techniquement, l'adresse IP du visiteur :</p>
+      <ul>
+        <li><strong>Netlify</strong> (hébergement) : journaux techniques du serveur ;</li>
+        <li><strong>OpenStreetMap</strong> : carte de la page d'accueil.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>7. Liens externes</h2>
+      <p>
+        Le site contient des liens vers d'autres sites (réseaux sociaux, inscriptions, partenaires).
+        L'association n'est pas responsable de leur contenu.
+      </p>
+    </section>
+
+    <p><a href="/" class="btn-ligne">← Retour à l'accueil</a></p>
+  </main>
+  <Footer />
+</Base>

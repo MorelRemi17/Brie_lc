@@ -1,0 +1,30 @@
+---
+import Photo from './Photo.astro';
+import { actus, dateLongue, photo, lien, externe } from '../lib/site';
+
+const liste = await actus(3);
+---
+{liste.length > 0 && (
+  <section class="section--alt" id="actus">
+    <div class="wrap section section--actus">
+      <h2 class="titre-section">Les actus</h2>
+      <div class="grille-3">
+        {liste.map((a) => {
+          const href = lien(a.data.lien);
+          return (
+            <article class="actu">
+              <Photo src={photo(a.data.image)} alt={a.data.titre} class="actu__image" aVenir="photo de l'actu" cadrage={a.data.cadrage} />
+              <div class="actu__corps">
+                {a.data.date
+                  ? <time class="actu__date" datetime={a.data.date.toISOString().slice(0, 10)}>{dateLongue(a.data.date)}</time>
+                  : <span class="actu__date">{a.data.dateTexte}</span>}
+                <h3 class="actu__titre">{href ? <a href={href} {...externe(href)}>{a.data.titre}</a> : a.data.titre}</h3>
+                <p class="actu__texte">{a.data.resume}</p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+)}

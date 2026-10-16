@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Sorties from '../components/Sorties.astro';
+import Rejoindre from '../components/Rejoindre.astro';
+import Calendrier from '../components/Calendrier.astro';
+import Actus from '../components/Actus.astro';
+import Galerie from '../components/Galerie.astro';
+import Partenaires from '../components/Partenaires.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import club from '../data/club.json';
+import { aRemplir, lien } from '../lib/site';
+
+// Données structurées : le club comme « SportsClub » (aide Google à afficher nom, lieu, réseaux).
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsClub',
+  name: club.nom,
+  sport: 'Cyclisme',
+  url: Astro.site?.href,
+  address: { '@type': 'PostalAddress', addressLocality: club.ville, postalCode: club.codePostal, addressCountry: 'FR' },
+  ...(aRemplir(club.email) ? {} : { email: club.email }),
+  ...(aRemplir(club.telephone) ? {} : { telephone: club.telephone }),
+  sameAs: [lien(club.facebook), lien(club.instagram)].filter(Boolean),
+};
+---
+<Base
+  title="Cyclo VTT Brie L.C. — Club cyclo de Brie"
+  description="Club cyclo de Brie : sortie route tous les dimanches matin au départ de la salle des fêtes, sorties gravel et VTT, Les Boucles de la Braconne."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header />
+  <main>
+    <Hero />
+    <Sorties />
+    <Rejoindre />
+    <Calendrier />
+    <Actus />
+    <Galerie />
+    <Partenaires />
+    <Contact />
+  </main>
+  <Footer />
+</Base>

@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import { photo } from '../lib/site';
+
+const logo = photo('logo.png');
+const liens = [
+  { href: '/#accueil', label: 'Accueil' },
+  { href: '/#sorties', label: 'Nos sorties' },
+  { href: '/#calendrier', label: 'Calendrier' },
+  { href: '/#actus', label: 'Actus' },
+  { href: '/#galerie', label: 'Galerie' },
+  { href: '/#partenaires', label: 'Partenaires' },
+  { href: '/#contact', label: 'Contact' },
+];
+---
+<header class="header">
+  <div class="wrap header__inner">
+    <a href="/" class="header__logo" aria-label="Cyclo VTT Brie L.C. — accueil">
+      {logo
+        ? <Image src={logo} alt="Logo Cyclo VTT Brie L.C." height={144} loading="eager" />
+        : <span class="header__logo-texte">Brie L.C.</span>}
+    </a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav-principale" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-principale" class="nav" aria-label="Navigation principale">
+      {liens.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a href="/#rejoindre" class="nav__cta">Rouler avec nous</a>
+    </nav>
+    <a href="/#rejoindre" class="btn header__cta">Rouler avec nous</a>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var bouton = document.querySelector('.burger');
+    var nav = document.getElementById('nav-principale');
+    if (!bouton || !nav) return;
+    function fermer() {
+      nav.classList.remove('is-open');
+      bouton.setAttribute('aria-expanded', 'false');
+      bouton.setAttribute('aria-label', 'Ouvrir le menu');
+    }
+    bouton.addEventListener('click', function () {
+      var ouvert = nav.classList.toggle('is-open');
+      bouton.setAttribute('aria-expanded', String(ouvert));
+      bouton.setAttribute('aria-label', ouvert ? 'Fermer le menu' : 'Ouvrir le menu');
+    });
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) fermer();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') fermer();
+    });
+  })();
+</script>

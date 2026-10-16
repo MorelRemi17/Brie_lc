@@ -1,0 +1,66 @@
+---
+import Photo from './Photo.astro';
+import Info from './Info.astro';
+import { calendrier, dateEvenement, dateCourte, photo, lien, externe } from '../lib/site';
+
+const { phare, liste } = await calendrier();
+const url = (id: string) => `/evenements/${id}/`;
+---
+{(phare || liste.length > 0) && (
+  <section class="wrap section section--calendrier" id="calendrier">
+    <div class="titre-bloc">
+      <div class="titre-bloc__kicker">À venir</div>
+      <h2 class="titre-section">Calendrier du club</h2>
+    </div>
+
+    {phare && (
+      <article class="phare">
+        <a href={url(phare.id)} class="phare__lien-affiche" tabindex="-1" aria-hidden="true">
+          <Photo
+            src={photo(phare.data.affiche)}
+            alt={`Affiche : ${phare.data.titre}`}
+            class="phare__affiche"
+            aVenir="affiche de l'événement"
+            widths={[300, 600]}
+            sizes="(max-width: 680px) 100vw, 300px"
+          />
+        </a>
+        <div class="phare__corps">
+          <div class="phare__tags">
+            <span class="phare__badge">{phare.data.badge}</span>
+            <span class="phare__type">{phare.data.type}</span>
+          </div>
+          <h3 class="phare__titre"><a href={url(phare.id)}>{phare.data.titre}</a></h3>
+          <div class="phare__infos">
+            <Info label="Date & heure">
+              {dateEvenement(phare)}{phare.data.heure ? ` · ${phare.data.heure}` : ''}
+            </Info>
+            <Info label="Lieu de départ">{phare.data.lieu}</Info>
+            {phare.data.infos.map((i) => <Info label={i.label}>{i.valeur}</Info>)}
+          </div>
+          <div class="phare__ctas">
+            <a href={lien(phare.data.lienInscription) ?? url(phare.id)} class="btn btn--noir" {...externe(lien(phare.data.lienInscription))}>S'inscrire</a>
+            {lien(phare.data.lienParcours)
+              ? <a href={lien(phare.data.lienParcours)} class="btn-ligne" {...externe(lien(phare.data.lienParcours))}>Télécharger les parcours</a>
+              : <a href={url(phare.id)} class="btn-ligne">En savoir plus</a>}
+          </div>
+        </div>
+      </article>
+    )}
+
+    {liste.length > 0 && (
+      <ul class="agenda">
+        {liste.map((e) => (
+          <li class="agenda__item">
+            <span class="agenda__date">{dateCourte(e.data.date, e.data.dateTexte)}</span>
+            <div class="agenda__corps">
+              <a href={url(e.id)} class="agenda__titre">{e.data.titre}</a>
+              {e.data.resume && <span class="agenda__details">{e.data.resume}</span>}
+            </div>
+            <a href={url(e.id)} class="agenda__lien" aria-label={`Détails : ${e.data.titre}`}>Détails →</a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+)}

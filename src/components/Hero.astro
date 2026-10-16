@@ -1,0 +1,34 @@
+---
+import { Image } from 'astro:assets';
+import { photo, largeurs } from '../lib/site';
+import club from '../data/club.json';
+
+const hero = photo('hero.png');
+---
+<section class="hero" id="accueil">
+  {hero && (
+    <Image
+      src={hero}
+      alt=""
+      class="hero__fond"
+      widths={largeurs(hero, [640, 1024, 1600, 2400])}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  )}
+  <div class="wrap hero__contenu">
+    <div class="hero__col">
+      <div class="hero__kicker">Club cyclo de Brie</div>
+      <h1 class="hero__titre">Roulez avec<br />Brie L.C.</h1>
+      <p class="hero__texte">
+        Sortie route tous les dimanches matin au départ de la {club.lieuRdv.toLowerCase()}. Tous niveaux, dans la bonne humeur.
+      </p>
+      <div class="hero__ctas">
+        <a href="/#rejoindre" class="btn">Viens essayer un dimanche</a>
+        <a href="/#calendrier" class="btn-ligne btn-ligne--blanc">Voir le calendrier</a>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="bandeau" aria-hidden="true"></div>

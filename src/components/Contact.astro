@@ -1,0 +1,32 @@
+---
+import club from '../data/club.json';
+import { lien, externe, mailHref, telHref } from '../lib/site';
+
+const reseaux = [
+  { nom: 'Facebook', href: lien(club.facebook) },
+  { nom: 'Instagram', href: lien(club.instagram) },
+];
+const mail = mailHref(club.email);
+const tel = telHref(club.telephonePresident);
+---
+<section class="wrap contact" id="contact">
+  <div class="contact__texte">
+    <h2 class="titre-section">Contact</h2>
+    <p class="contact__adresse">
+      {club.lieuRdv}<br />Rendez-vous le dimanche à {club.horaireEte} en été, {club.horaireHiver} en hiver
+    </p>
+    <div class="contact__coord">
+      {mail ? <a href={mail}>{club.email}</a> : <span>{club.email}</span>}
+      {tel ? <a href={tel}>{club.telephonePresident}</a> : <span>{club.telephonePresident}</span>}
+    </div>
+    <div class="reseaux">
+      {reseaux.map((r) => <a href={r.href ?? '#'} {...externe(r.href)}>{r.nom}</a>)}
+    </div>
+  </div>
+  <iframe
+    class="carte-osm"
+    title={`Carte : ${club.ville}`}
+    loading="lazy"
+    src="https://www.openstreetmap.org/export/embed.html?bbox=0.225%2C45.715%2C0.295%2C45.755&layer=mapnik&marker=45.735%2C0.26"
+  ></iframe>
+</section>

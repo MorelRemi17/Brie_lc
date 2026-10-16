@@ -1,0 +1,23 @@
+---
+import sorties from '../data/sorties.json';
+---
+<section class="wrap section" id="sorties">
+  <div class="titre-bloc">
+    <div class="titre-bloc__kicker">Chaque semaine</div>
+    <h2 class="titre-section">Nos sorties</h2>
+  </div>
+  <div class="grille-3">
+    {sorties.map((s) => (
+      <article class:list={['carte-sortie', { 'carte-sortie--sombre': s.style === 'sombre' }]}>
+        <h3 class="carte-sortie__titre">{s.titre}</h3>
+        {(s.horaires ?? []).map((h) => (
+          <div class="horaire">
+            <span class="horaire__heure">{h.heure}</span>
+            <span class="horaire__libelle">{h.libelle}</span>
+          </div>
+        ))}
+        {s.texte && <p class="carte-sortie__texte">{s.texte}</p>}
+      </article>
+    ))}
+  </div>
+</section>

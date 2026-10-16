@@ -1,0 +1,19 @@
+[
+  {
+    "titre": "Le dimanche matin",
+    "style": "sombre",
+    "horaires": [
+      { "heure": "8 h", "libelle": "en été" },
+      { "heure": "9 h", "libelle": "en hiver" }
+    ],
+    "texte": "Départ de la salle des fêtes de Brie. Groupes selon les niveaux."
+  },
+  {
+    "titre": "En semaine",
+    "texte": "Des sorties ponctuelles sont proposées en semaine. On les annonce dans le calendrier et sur nos réseaux."
+  },
+  {
+    "titre": "Gravel & VTT",
+    "texte": "De temps en temps, on quitte le bitume : des sorties gravel et VTT sont organisées sur les chemins du coin."
+  }
+]

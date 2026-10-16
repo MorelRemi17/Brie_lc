@@ -1,0 +1,14 @@
+---
+interface Props {
+  label: string;
+  href?: string;
+  /** valeur en 20 px gras (téléphone, e-mail) */
+  fort?: boolean;
+}
+const { label, href, fort = false } = Astro.props;
+const classe = ['info__valeur', fort && 'info__valeur--fort'];
+---
+<div class="info">
+  <span class="info__label">{label}</span>
+  {href ? <a class:list={classe} href={href}><slot /></a> : <span class:list={classe}><slot /></span>}
+</div>

@@ -1,0 +1,16 @@
+---
+import Photo from './Photo.astro';
+import { photosGalerie } from '../lib/site';
+
+// 8 photos max sur l'accueil. Tant qu'aucune photo n'est déposée, on garde les 8 emplacements de la maquette.
+const photos = photosGalerie().slice(0, 8);
+const cases = photos.length ? photos : Array.from({ length: 8 }, () => ({ src: undefined, alt: 'photo sortie' }));
+---
+<section class="wrap section section--galerie" id="galerie">
+  <h2 class="titre-section">Galerie</h2>
+  <div class="galerie">
+    {cases.map((p) => (
+      <Photo src={p.src} alt={p.alt} class="galerie__case" aVenir="photo sortie" widths={[300, 600]} sizes="(max-width: 680px) 50vw, 25vw" />
+    ))}
+  </div>
+</section>

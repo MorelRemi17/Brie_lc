@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Photo from '../../components/Photo.astro';
+import Info from '../../components/Info.astro';
+import club from '../../data/club.json';
+import { photo, lien, externe, dateJour, isoDate, type Evenement } from '../../lib/site';
+
+// Une page par fichier de src/content/evenements/ (y compris les événements passés).
+export async function getStaticPaths() {
+  const evenements = await getCollection('evenements');
+  return evenements.map((e) => ({ params: { id: e.id }, props: { e } }));
+}
+
+const { e } = Astro.props as { e: Evenement };
+const d = e.data;
+const { Content } = await render(e);
+const affiche = photo(d.affiche);
+const inscription = lien(d.lienInscription);
+const parcours = lien(d.lienParcours);
+const passe = d.date ? d.date.getTime() < Date.now() - 86400000 : false;
+
+const description =
+  d.resume ?? `${d.type} organisée par ${club.nom}, au départ de : ${d.lieu}.`;
+
+// Données structurées Event : permettent d'apparaître dans les résultats « événements » de Google.
+// startDate est obligatoire : on ne les publie que si la date est renseignée.
+const jsonLd = d.date && {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: d.titre,
+  startDate: isoDate(d.date),
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  description,
+  location: {
+    '@type': 'Place',
+    name: d.lieu,
+    address: { '@type': 'PostalAddress', addressLocality: club.ville, postalCode: club.codePostal, addressCountry: 'FR' },
+  },
+  organizer: { '@type': 'SportsClub', name: club.nom, url: Astro.site?.href },
+  ...(affiche ? { image: [new URL(affiche.src, Astro.site).href] } : {}),
+  ...(inscription ? { offers: { '@type': 'Offer', url: inscription } } : {}),
+};
+---
+<Base title={`${d.titre} — ${club.nom}`} description={description} image={affiche} ogType="article">
+  {jsonLd && <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  <Header />
+  <main class="wrap evenement">
+    <a href="/#calendrier" class="evenement__retour">← Calendrier du club</a>
+    <div class="evenement__grille">
+      <Photo src={affiche} alt={`Affiche : ${d.titre}`} class="evenement__affiche" aVenir="affiche de l'événement" widths={[400, 800]} sizes="(max-width: 960px) 100vw, 380px" prioritaire />
+      <div class="evenement__corps">
+        <div class="phare__tags">
+          {d.phare && <span class="phare__badge">{d.badge}</span>}
+          <span class="phare__type">{d.type}</span>
+          {passe && <span class="evenement__passe">Événement passé</span>}
+        </div>
+        <h1 class="phare__titre">{d.titre}</h1>
+        <div class="phare__infos">
+          <Info label="Date">
+            {d.date ? <time datetime={isoDate(d.date)}>{dateJour(d.date)}</time> : d.dateTexte}
+          </Info>
+          {d.heure && <Info label="Heure">{d.heure}</Info>}
+          <Info label="Lieu de départ">{d.lieu}</Info>
+          {d.infos.map((i) => <Info label={i.label}>{i.valeur}</Info>)}
+        </div>
+        {(inscription || parcours) && !passe && (
+          <div class="phare__ctas">
+            {inscription && <a href={inscription} class="btn btn--noir" {...externe(inscription)}>S'inscrire</a>}
+            {parcours && <a href={parcours} class="btn-ligne" {...externe(parcours)}>Télécharger les parcours</a>}
+          </div>
+        )}
+        <div class="evenement__texte">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>

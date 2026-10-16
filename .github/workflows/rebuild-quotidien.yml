@@ -1,0 +1,25 @@
+# Reconstruit le site chaque nuit : les événements passés disparaissent ainsi
+# tout seuls du calendrier de la page d'accueil.
+#
+# Mise en place (une fois) :
+#  1. Netlify > Site configuration > Build & deploy > Build hooks > « Add build hook »
+#     (nom : rebuild-quotidien) → copier l'URL.
+#  2. GitHub > Settings > Secrets and variables > Actions > « New repository secret »
+#     nom : NETLIFY_BUILD_HOOK, valeur : l'URL copiée.
+name: Rebuild quotidien
+
+on:
+  schedule:
+    - cron: '0 3 * * *' # 3 h UTC chaque jour
+  workflow_dispatch: {}  # bouton « Run workflow » pour lancer à la main
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Déclencher un build Netlify
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "Secret NETLIFY_BUILD_HOOK absent" >&2; exit 1; fi
+          curl -fsS -X POST -d '{}' "$HOOK"

@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import partenaires from '../data/partenaires.json';
+import { logoPartenaire, lien, externe } from '../lib/site';
+
+const liste = partenaires.map((p) => ({ ...p, image: logoPartenaire(p.logo), href: lien(p.lien) }));
+---
+{liste.length > 0 && (
+  <section class="partenaires" id="partenaires">
+    <div class="wrap partenaires__inner">
+      <h2 class="partenaires__titre">Nos partenaires</h2>
+      <div class="logos">
+        {liste.map((p) => {
+          const contenu = p.image ? <Image src={p.image} alt={p.nom} height={132} /> : (p.nom || 'logo partenaire');
+          const classe = ['logo-partenaire', { 'logo-partenaire--image': p.image }];
+          return p.href
+            ? <a class:list={classe} href={p.href} title={p.nom} {...externe(p.href)}>{contenu}</a>
+            : <div class:list={classe}>{contenu}</div>;
+        })}
+      </div>
+    </div>
+  </section>
+)}
