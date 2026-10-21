@@ -151,15 +151,13 @@ export function resumer(texte: string, max = 160) {
 
 /**
  * Événements à venir (date ≥ aujourd'hui, ou sans date), du plus proche au plus lointain ;
- * les événements sans date sont mis à la fin. Le premier événement « phare » est séparé du reste.
+ * les événements sans date sont mis à la fin. Affichés en tête des actus de l'accueil.
  */
-export async function calendrier() {
+export async function evenementsAVenir() {
   const jour = aujourdhui().getTime();
-  const aVenir = (await getCollection('evenements'))
+  return (await getCollection('evenements'))
     .filter((e) => !e.data.date || e.data.date.getTime() >= jour)
     .sort((a, b) => (a.data.date?.getTime() ?? Infinity) - (b.data.date?.getTime() ?? Infinity) || a.id.localeCompare(b.id));
-  const phare = aVenir.find((e) => e.data.phare);
-  return { phare, liste: aVenir.filter((e) => e !== phare) };
 }
 
 /** Texte de date d'un événement : « 14 mars 2027 » ou le dateTexte. */

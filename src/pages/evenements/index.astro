@@ -13,7 +13,7 @@ const passes = tous.filter((e) => estPasse(e));
 const url = (id: string) => `/evenements/${id}/`;
 ---
 <Base
-  title={`Calendrier et événements – ${club.nom}`}
+  title={`Événements – ${club.nom}`}
   description={`Toutes les sorties et randonnées du club ${club.nom} à ${club.ville} (${club.departement}) : événements à venir et archives des éditions passées.`}
 >
   <Header />
@@ -26,7 +26,7 @@ const url = (id: string) => `/evenements/${id}/`;
     </nav>
     <div class="titre-bloc">
       <div class="titre-bloc__kicker">Sorties &amp; randonnées</div>
-      <h1 class="titre-section">Calendrier du club</h1>
+      <h1 class="titre-section">Les événements du club</h1>
     </div>
 
     {[{ titre: 'À venir', liste: aVenir }, { titre: 'Événements passés', liste: passes }].map((bloc) =>

@@ -195,22 +195,12 @@ a.info__valeur:hover { color: var(--vert-fonce); }
 .carte-contact__titre { margin: 0; font: 400 22px var(--f-marker); }
 
 /* ============================================================
-   CALENDRIER
+   ÉVÉNEMENTS (page d'un événement, liste /evenements/)
    ============================================================ */
-.section--calendrier { gap: 32px; }
-.phare {
-  display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 36px;
-  border: 3px solid var(--noir); padding: 28px; background: var(--blanc);
-}
-.phare__affiche { aspect-ratio: 3 / 4; width: 100%; height: auto; object-fit: cover; }
-.phare__corps { display: flex; flex-direction: column; gap: 18px; }
 .phare__tags { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .phare__badge { background: var(--vert); color: var(--blanc); font: 800 20px var(--f-cond); padding: 4px 12px; text-transform: uppercase; }
 .phare__type { font: 600 15px var(--f-texte); color: var(--gris); }
 .phare__titre { margin: 0; font: 400 44px/1 var(--f-marker); text-transform: uppercase; }
-.phare__titre a { color: inherit; }
-.phare__titre a:hover { color: var(--vert-fonce); }
-.phare__lien-affiche { display: block; align-self: start; }
 .phare__infos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .phare__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
 
@@ -236,6 +226,8 @@ a.agenda__titre:hover { color: var(--vert-fonce); }
 .actu { background: var(--blanc); display: flex; flex-direction: column; }
 .actu__image { height: 220px; width: 100%; object-fit: cover; }
 .actu__corps { padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+.actu__meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.actu__badge { background: var(--vert); color: var(--blanc); font: 800 15px var(--f-cond); padding: 2px 10px; text-transform: uppercase; }
 .actu__date { font: 700 13px var(--f-texte); text-transform: uppercase; color: var(--vert-fonce); }
 .actu__titre { margin: 0; font: 400 22px/1.15 var(--f-marker); }
 .actu__titre a { color: inherit; }
@@ -348,7 +340,6 @@ a.logo-partenaire:hover { border-color: var(--vert); color: var(--blanc); }
   .grille-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grille-3 > :first-child { grid-column: 1 / -1; }
   .rejoindre__inner { grid-template-columns: 1fr; gap: 32px; }
-  .phare { grid-template-columns: 220px minmax(0, 1fr); gap: 24px; }
   .phare__infos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .evenement__grille { grid-template-columns: 1fr; gap: 28px; }
   .evenement__affiche { max-width: 380px; }
@@ -380,8 +371,6 @@ a.logo-partenaire:hover { border-color: var(--vert); color: var(--blanc); }
   .rejoindre__titre { font-size: 34px; }
   .carte-contact { padding: 20px; }
 
-  .phare { grid-template-columns: 1fr; padding: 16px; }
-  .phare__affiche { max-width: 320px; }
   .phare__titre { font-size: 32px; }
   .phare__infos { grid-template-columns: 1fr; }
   .evenement { padding-top: 32px; padding-bottom: 56px; }

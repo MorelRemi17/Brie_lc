@@ -24,9 +24,9 @@ const evenements = defineCollection({
     /** ex. « 8 h », « départs dès 7 h 30 » */
     heure: z.string().optional(),
     lieu: z.string(),
-    /** Une ligne affichée dans la liste du calendrier */
+    /** Une ligne affichée sur la carte de l'accueil et dans la liste des événements */
     resume: z.string().optional(),
-    /** true = mis en avant en grand en tête du calendrier (le plus proche des événements « phare ») */
+    /** true = badge (ex. « Événement phare ») affiché sur la page de l'événement */
     phare: z.boolean().default(false),
     badge: z.string().default('Événement phare'),
     /** Nom d'un fichier de src/assets/photos/ */

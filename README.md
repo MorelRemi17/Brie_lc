@@ -44,8 +44,8 @@ type: Randonnée route
 date: 2027-03-14                 # AAAA-MM-JJ (sans date : dateTexte est affiché, ex. "[date]")
 heure: départs dès 7 h 30        # facultatif
 lieu: Salle des fêtes de Brie
-resume: Randonnée route · 45 · 80 · 110 km   # une ligne dans la liste du calendrier
-phare: true                      # mis en avant en grand en tête du calendrier
+resume: Randonnée route · 45 · 80 · 110 km   # texte de la carte sur l'accueil et de la liste
+phare: true                      # facultatif : affiche le badge sur la page de l'événement
 badge: Événement phare           # facultatif
 affiche: affiche-boucles-2027.jpg   # fichier de src/assets/photos/ (facultatif)
 infos:                           # lignes libres, autant qu'on veut
@@ -60,8 +60,9 @@ lienParcours: https://…          # facultatif (lien vers les GPX)
 Texte libre de la page de l'événement, en Markdown : **gras**, listes, liens…
 ```
 
-- Sur l'accueil, seuls les événements **à venir** sont affichés, du plus proche au plus lointain (ceux sans
-  date à la fin). Le premier événement `phare: true` à venir prend le grand bloc.
+- Sur l'accueil, il n'y a pas de calendrier : les événements **à venir** s'affichent **en tête des actus**,
+  avec un badge « À venir », du plus proche au plus lointain (ceux sans date à la fin). La carte montre
+  l'affiche, la date, le `resume` et renvoie vers la page de l'événement.
 - Un événement passé disparaît de l'accueil, mais sa page reste en ligne (marquée « Événement passé »).
 - Les données structurées Google (`Event`) ne sont générées que si `date` est renseignée.
 
@@ -97,7 +98,7 @@ cadrage: center 35%         # facultatif : partie de la photo à garder visible
 lien: https://…             # facultatif : rend le titre cliquable
 ---
 ```
-Les 3 actus les plus récentes sont affichées sur l'accueil.
+L'accueil affiche 3 cartes : d'abord les événements à venir, puis les actus les plus récentes.
 
 ## Images
 
@@ -159,7 +160,7 @@ src/content/evenements/     un .md par événement
 src/content/actus/          un .md par actu
 src/data/                   club.json, sorties.json, partenaires.json
 src/assets/                 photos/, galerie/, partenaires/
-src/lib/site.ts             utilitaires : images, dates, tri du calendrier
+src/lib/site.ts             utilitaires : images, dates, tri des événements et des actus
 src/components/             une section par fichier + Photo (image ou bloc hachuré), Info
 src/pages/index.astro       accueil
 src/pages/evenements/[id].astro   page de chaque événement
