@@ -65,13 +65,11 @@ Texte libre de la page de l'événement, en Markdown : **gras**, listes, liens�
 - Un événement passé disparaît de l'accueil, mais sa page reste en ligne (marquée « Événement passé »).
 - Les données structurées Google (`Event`) ne sont générées que si `date` est renseignée.
 
-### Mise à jour automatique chaque nuit
+### Événements passés et rebuild
 
-Le site est statique : un événement passé ne disparaît de l'accueil qu'au build suivant. Le fichier
-`.github/workflows/rebuild-quotidien.yml` relance donc un build chaque nuit. Mise en place, à faire une fois :
-1. Netlify > Site configuration > Build & deploy > **Build hooks** > « Add build hook » → copier l'URL.
-2. GitHub > Settings > Secrets and variables > Actions > « New repository secret » :
-   nom `NETLIFY_BUILD_HOOK`, valeur = l'URL.
+Le site est statique : un événement passé ne disparaît de l'accueil qu'au build suivant, c'est-à-dire au
+prochain push. Il n'y a pas de rebuild automatique. Pour retirer un événement passé sans rien modifier, on peut
+relancer un build à la main dans Netlify : Deploys > « Trigger deploy » > « Deploy site ».
 
 ### Référencement des pages d'événement
 
@@ -142,16 +140,15 @@ Il faut Node ≥ 22.22 (`.nvmrc`).
    Les réglages sont lus dans `netlify.toml` (build `npm run build`, dossier `dist`, Node 22).
 3. Brancher le nom de domaine du club (Domain management). Netlify fournit la variable `URL` au build :
    sitemap, `robots.txt` et balises de partage l'utilisent automatiquement.
-4. Configurer le build quotidien (voir plus haut).
-5. Déclarer le site dans Google Search Console et y soumettre `https://<domaine>/sitemap-index.xml`.
+4. Déclarer le site dans Google Search Console et y soumettre `https://<domaine>/sitemap-index.xml`.
    Le site est déclaré en propriété « Préfixe d'URL » `https://brielc.netlify.app/` : une propriété « Domaine »
    est impossible, car le DNS de `netlify.app` appartient à Netlify. La validation se fait par le fichier
    `public/googleb1b4dc2e88cec1fe.html` et par la balise `google-site-verification` de `src/layouts/Base.astro`.
    **Ne supprimer ni l'un ni l'autre**, sinon Google retire l'accès. Avec un vrai
    nom de domaine, il faudra déclarer une nouvelle propriété.
-6. Créer la fiche **Google Business Profile** du club (catégorie « Club de cyclisme », adresse de la salle des
+5. Créer la fiche **Google Business Profile** du club (catégorie « Club de cyclisme », adresse de la salle des
    fêtes, lien vers le site) : c'est ce qui fait apparaître le club sur Google Maps et dans « club vélo près de moi ».
-7. Après la mise en ligne, tester une page d'événement daté avec l'outil
+6. Après la mise en ligne, tester une page d'événement daté avec l'outil
    [Résultats enrichis de Google](https://search.google.com/test/rich-results).
 
 ## Structure
@@ -173,5 +170,4 @@ src/pages/mentions-legales.astro
 src/pages/robots.txt.ts
 src/styles/global.css       couleurs du club, styles, responsive
 netlify.toml                configuration Netlify
-.github/workflows/rebuild-quotidien.yml
 ```

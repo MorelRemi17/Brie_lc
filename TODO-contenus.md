@@ -38,4 +38,3 @@
 ## Autres
 - [x] Google Search Console : propriété `https://brielc.netlify.app/` validée, sitemap récupéré par Google (16/10/2026)
 - [ ] Fiche Google Business Profile du club
-- [ ] Netlify : build hook + secret GitHub `NETLIFY_BUILD_HOOK` (voir README)
