@@ -14,7 +14,8 @@
 - [ ] `contactNom` : `[Prénom Nom]`
 - [ ] `telephonePresident` : `[téléphone du président]`
 - [ ] `email` : `[email du club]`
-- [ ] `facebook`, `instagram` : URL (vides aujourd'hui)
+- [x] `instagram` : https://www.instagram.com/brielccyclovtt/ (21/10/2026)
+- [ ] `facebook` : groupe https://www.facebook.com/groups/127556150606333/ à confirmer (privé ? page publique ?)
 
 ## `src/content/evenements/`
 - [ ] `boucles-braconne-2027.md` : `date` (à décommenter), heure, tarif, distances, ravitos, affiche,
