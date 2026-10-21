@@ -110,12 +110,6 @@ function aujourdhui() {
   return new Date(Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate()));
 }
 
-/** Tous les événements, du plus récent au plus ancien (archive). */
-export async function tousEvenements() {
-  return (await getCollection('evenements'))
-    .sort((a, b) => (b.data.date?.getTime() ?? Infinity) - (a.data.date?.getTime() ?? Infinity) || a.id.localeCompare(b.id));
-}
-
 export function estPasse(e: Evenement) {
   return e.data.date ? e.data.date.getTime() < aujourdhui().getTime() : false;
 }
@@ -165,9 +159,57 @@ export const dateEvenement = (e: Evenement) => dateLongue(e.data.date, e.data.da
 
 // ---------- Actus ----------
 
-/** Actus datées de la plus récente à la plus ancienne, puis les actus sans date. */
-export async function actus(max = 3) {
-  return (await getCollection('actus'))
-    .sort((a, b) => (b.data.date?.getTime() ?? -Infinity) - (a.data.date?.getTime() ?? -Infinity) || a.id.localeCompare(b.id))
-    .slice(0, max);
+/** Une carte de la section « Les actus » : une actu ou un événement, ramenés à la même forme. */
+export interface Carte {
+  id: string;
+  aVenir: boolean;
+  titre: string;
+  date?: Date;
+  dateTexte: string;
+  resume?: string;
+  image?: ImageMetadata;
+  cadrage?: string;
+  href?: string;
+}
+
+function carteEvenement(e: Evenement, aVenir: boolean): Carte {
+  return {
+    id: `evenement-${e.id}`,
+    aVenir,
+    titre: e.data.titre,
+    date: e.data.date,
+    dateTexte: dateEvenement(e),
+    resume: e.data.resume,
+    image: photo(e.data.affiche),
+    // Les affiches sont en portrait : on garde le haut (titre de l'affiche)
+    cadrage: 'center 20%',
+    href: `/evenements/${e.id}/`,
+  };
+}
+
+function carteActu(a: CollectionEntry<'actus'>): Carte {
+  return {
+    id: `actu-${a.id}`,
+    aVenir: false,
+    titre: a.data.titre,
+    date: a.data.date,
+    dateTexte: a.data.date ? dateLongue(a.data.date) : a.data.dateTexte,
+    resume: a.data.resume,
+    image: photo(a.data.image),
+    cadrage: a.data.cadrage,
+    href: lien(a.data.lien),
+  };
+}
+
+/**
+ * Fil des actus : d'abord les événements à venir (du plus proche au plus lointain), puis les actus et les
+ * événements passés mélangés, du plus récent au plus ancien (les actus sans date à la fin).
+ */
+export async function filActus(max = Infinity): Promise<Carte[]> {
+  const aVenir = (await evenementsAVenir()).map((e) => carteEvenement(e, true));
+  const passes = (await getCollection('evenements')).filter(estPasse).map((e) => carteEvenement(e, false));
+  const nouvelles = (await getCollection('actus')).map(carteActu);
+  const reste = [...passes, ...nouvelles]
+    .sort((a, b) => (b.date?.getTime() ?? -Infinity) - (a.date?.getTime() ?? -Infinity) || a.id.localeCompare(b.id));
+  return [...aVenir, ...reste].slice(0, max);
 }

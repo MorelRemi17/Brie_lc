@@ -84,7 +84,7 @@ Pour qu'un événement ressorte bien dans Google :
 - une `affiche` (elle sert aussi d'image dans les résultats et de miniature sur les réseaux sociaux) ;
 - un `resume` qui dit concrètement ce que c'est (distances, public), et quelques phrases dans le corps du fichier.
 
-Tous les événements, passés compris, sont listés sur `/evenements/`.
+Tous les événements, passés compris, et toutes les actus sont sur `/evenements/`.
 
 ## Actus — `src/content/actus/*.md`
 
@@ -98,7 +98,8 @@ cadrage: center 35%         # facultatif : partie de la photo à garder visible
 lien: https://…             # facultatif : rend le titre cliquable
 ---
 ```
-L'accueil affiche 3 cartes : d'abord les événements à venir, puis les actus les plus récentes.
+L'accueil affiche **6 cartes** : d'abord les événements à venir, puis les actus et les événements passés
+mélangés, du plus récent au plus ancien. La page `/evenements/` (« Actus et événements ») les affiche tous.
 
 ## Images
 

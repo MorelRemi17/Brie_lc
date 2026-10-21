@@ -204,25 +204,12 @@ a.info__valeur:hover { color: var(--vert-fonce); }
 .phare__infos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .phare__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
 
-.agenda { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
-.agenda__item {
-  display: grid; grid-template-columns: 140px minmax(0, 1fr) auto; gap: 24px; align-items: center;
-  padding: 20px 0; border-bottom: 2px solid var(--bord);
-}
-.agenda__date {
-  background: var(--noir); color: var(--blanc); text-align: center; text-transform: uppercase;
-  font: 800 22px var(--f-cond); padding: 8px 12px;
-}
-.agenda__corps { display: flex; flex-direction: column; gap: 2px; }
-.agenda__titre { font: 400 24px var(--f-marker); color: var(--noir); }
-a.agenda__titre:hover { color: var(--vert-fonce); }
-.agenda__details { font: 500 16px var(--f-texte); color: var(--gris); }
-.agenda__lien { font: 700 15px var(--f-texte); text-transform: uppercase; color: var(--vert-fonce); white-space: nowrap; }
-
 /* ============================================================
    ACTUS
    ============================================================ */
 .section--actus { gap: 32px; }
+/* Comme grille-3, sans la 1re carte en pleine largeur sur tablette (6 cartes = 3 lignes de 2) */
+.grille-actus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .actu { background: var(--blanc); display: flex; flex-direction: column; }
 .actu__image { height: 220px; width: 100%; object-fit: cover; }
 .actu__corps { padding: 22px; display: flex; flex-direction: column; gap: 8px; }
@@ -294,7 +281,7 @@ a.logo-partenaire:hover { border-color: var(--vert); color: var(--blanc); }
 
 /* ---------- Archive des événements / 404 ---------- */
 .archive { gap: 32px; }
-.archive__bloc { display: flex; flex-direction: column; gap: 8px; }
+.archive__bloc { display: flex; flex-direction: column; gap: 20px; }
 .archive__titre { margin: 0; font: 400 30px var(--f-marker); color: var(--vert-fonce); }
 .page-404__texte { margin: 0; font: 500 18px/1.6 var(--f-texte); color: var(--texte); max-width: 620px; }
 
@@ -339,6 +326,7 @@ a.logo-partenaire:hover { border-color: var(--vert); color: var(--blanc); }
 
   .grille-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grille-3 > :first-child { grid-column: 1 / -1; }
+  .grille-actus { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rejoindre__inner { grid-template-columns: 1fr; gap: 32px; }
   .phare__infos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .evenement__grille { grid-template-columns: 1fr; gap: 28px; }
@@ -365,7 +353,7 @@ a.logo-partenaire:hover { border-color: var(--vert); color: var(--blanc); }
   .titre-section { font-size: clamp(34px, 10vw, 44px); }
   .titre-bloc__kicker { font-size: 24px; }
 
-  .grille-3 { grid-template-columns: 1fr; }
+  .grille-3, .grille-actus { grid-template-columns: 1fr; }
   .carte-sortie { padding: 24px; }
   .rejoindre__inner { padding-top: 48px; padding-bottom: 48px; }
   .rejoindre__titre { font-size: 34px; }
@@ -376,8 +364,6 @@ a.logo-partenaire:hover { border-color: var(--vert); color: var(--blanc); }
   .evenement { padding-top: 32px; padding-bottom: 56px; }
   .evenement__corps .phare__titre { font-size: 36px; }
 
-  .agenda__item { grid-template-columns: 1fr; gap: 10px; }
-  .agenda__date { justify-self: start; }
 
   .galerie { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .logos { grid-template-columns: repeat(2, minmax(0, 1fr)); }

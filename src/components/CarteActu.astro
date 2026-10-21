@@ -1,0 +1,22 @@
+---
+import Photo from './Photo.astro';
+import { externe, type Carte } from '../lib/site';
+
+interface Props {
+  carte: Carte;
+}
+const { carte: c } = Astro.props;
+---
+<article class:list={['actu', { 'actu--a-venir': c.aVenir }]}>
+  <Photo src={c.image} alt={c.titre} class="actu__image" aVenir={c.aVenir ? "affiche de l'événement" : "photo de l'actu"} cadrage={c.cadrage} />
+  <div class="actu__corps">
+    <div class="actu__meta">
+      {c.aVenir && <span class="actu__badge">À venir</span>}
+      {c.date
+        ? <time class="actu__date" datetime={c.date.toISOString().slice(0, 10)}>{c.dateTexte}</time>
+        : <span class="actu__date">{c.dateTexte}</span>}
+    </div>
+    <h3 class="actu__titre">{c.href ? <a href={c.href} {...externe(c.href)}>{c.titre}</a> : c.titre}</h3>
+    {c.resume && <p class="actu__texte">{c.resume}</p>}
+  </div>
+</article>

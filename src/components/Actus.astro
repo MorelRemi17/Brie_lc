@@ -1,54 +1,20 @@
 ---
-import Photo from './Photo.astro';
-import { actus, evenementsAVenir, dateEvenement, dateLongue, photo, lien, externe } from '../lib/site';
+import CarteActu from './CarteActu.astro';
+import { filActus } from '../lib/site';
 
-// Les événements à venir passent en tête, puis les actus les plus récentes : 3 cartes au total.
-const MAX = 3;
-const evenements = (await evenementsAVenir()).slice(0, MAX).map((e) => ({
-  aVenir: true,
-  titre: e.data.titre,
-  date: e.data.date,
-  dateTexte: dateEvenement(e),
-  resume: e.data.resume,
-  image: photo(e.data.affiche),
-  cadrage: 'center 20%',
-  href: `/evenements/${e.id}/`,
-}));
-const nouvelles = (await actus(MAX - evenements.length)).map((a) => ({
-  aVenir: false,
-  titre: a.data.titre,
-  date: a.data.date,
-  dateTexte: a.data.date ? dateLongue(a.data.date) : a.data.dateTexte,
-  resume: a.data.resume,
-  image: photo(a.data.image),
-  cadrage: a.data.cadrage,
-  href: lien(a.data.lien),
-}));
-const liste = [...evenements, ...nouvelles];
+// Événements à venir en tête, puis les actus et événements passés les plus récents.
+const MAX = 6;
+const liste = await filActus(MAX);
 ---
 {liste.length > 0 && (
   <section class="section--alt" id="actus">
     <div class="wrap section section--actus">
       <div class="section__entete">
         <h2 class="titre-section">Les actus</h2>
-        <a href="/evenements/" class="lien-fleche">Tous les événements →</a>
+        <a href="/evenements/" class="lien-fleche">Toutes les actus →</a>
       </div>
-      <div class="grille-3">
-        {liste.map((c) => (
-          <article class:list={['actu', { 'actu--a-venir': c.aVenir }]}>
-            <Photo src={c.image} alt={c.titre} class="actu__image" aVenir={c.aVenir ? "affiche de l'événement" : "photo de l'actu"} cadrage={c.cadrage} />
-            <div class="actu__corps">
-              <div class="actu__meta">
-                {c.aVenir && <span class="actu__badge">À venir</span>}
-                {c.date
-                  ? <time class="actu__date" datetime={c.date.toISOString().slice(0, 10)}>{c.dateTexte}</time>
-                  : <span class="actu__date">{c.dateTexte}</span>}
-              </div>
-              <h3 class="actu__titre">{c.href ? <a href={c.href} {...externe(c.href)}>{c.titre}</a> : c.titre}</h3>
-              {c.resume && <p class="actu__texte">{c.resume}</p>}
-            </div>
-          </article>
-        ))}
+      <div class="grille-actus">
+        {liste.map((c) => <CarteActu carte={c} />)}
       </div>
     </div>
   </section>
