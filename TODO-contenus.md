@@ -19,8 +19,6 @@
 ## `src/content/evenements/`
 - [ ] `boucles-braconne-2027.md` : `date` (à décommenter), heure, tarif, distances, ravitos, affiche,
       liens d'inscription et de parcours, texte de présentation
-- [ ] `sortie-gravel.md` : date, distance, description
-- [ ] `sortie-vtt.md` : date, lieu, distance, description
 
 ## `src/content/actus/`
 - [ ] `horaire-hiver.md` : date, texte, photo
