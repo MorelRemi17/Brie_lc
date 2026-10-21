@@ -127,7 +127,16 @@ export function estPasse(e: Evenement) {
 export function aIndexer(e: Evenement) {
   // dateTexte vaut « [date] » par défaut : on l'ignore, c'est la vraie date qui compte.
   const { dateTexte: _ignore, ...champs } = e.data;
-  return !!e.data.date && !contientPlaceholder(JSON.stringify(champs)) && !contientPlaceholder(e.body);
+  return !!e.data.date && !textes(champs).some(contientPlaceholder) && !contientPlaceholder(e.body);
+}
+
+// On teste chaque texte séparément : dans un JSON.stringify, les crochets d'un tableau (ex. `infos`)
+// passeraient pour un placeholder.
+function textes(v: unknown): string[] {
+  if (typeof v === 'string') return [v];
+  if (Array.isArray(v)) return v.flatMap(textes);
+  if (v && typeof v === 'object' && !(v instanceof Date)) return Object.values(v).flatMap(textes);
+  return [];
 }
 
 /** Texte court pour les titres et descriptions : « à Brie (Charente) » */
