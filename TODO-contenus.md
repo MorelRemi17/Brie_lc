@@ -22,10 +22,9 @@
 
 ## `src/content/actus/`
 - [ ] `horaire-hiver.md` : date, texte, photo
-- [ ] `actu-3.md` : à remplacer par une vraie actu (ou à supprimer)
 
 ## Galerie / partenaires
-- [ ] Photos de sorties dans `src/assets/galerie/`
+- [x] Photos de sorties dans `src/assets/galerie/` : 8 photos tirées de l'Instagram du club (21/10/2026)
 - [~] Partenaires repris de l'ancien site (2015, **à confirmer**) : Les Mosaïques du Sud, Gacon Thermique, Fabien Baudoin,
       Laurent Sandrine — sans logo ni lien (lesmosaiquesdusud.fr ne répond plus). Logos dans `src/assets/partenaires/`
 
