@@ -10,10 +10,9 @@
       `2026-09-01-sortie-club.jpg`, pour la retrouver en 1re photo de la galerie comme sur la maquette
 
 ## `src/data/club.json`
-- [ ] `telephone` : `[06 XX XX XX XX]`
-- [ ] `contactNom` : `[Prénom Nom]`
-- [ ] `telephonePresident` : `[téléphone du président]`
-- [ ] `email` : `[email du club]`
+- [~] `telephone` et `telephonePresident` : `06 70 95 18 06` repris de l'ancien site (2016) → **à confirmer**
+- [ ] `contactNom` : vide pour l'instant (à qui est le numéro ?)
+- [~] `email` : `cjpm16@orange.fr` repris de l'ancien site → **à confirmer**
 - [x] `instagram` : https://www.instagram.com/brielccyclovtt/ (21/10/2026)
 - [ ] `facebook` : groupe https://www.facebook.com/groups/127556150606333/ à confirmer (privé ? page publique ?)
 
@@ -29,7 +28,8 @@
 
 ## Galerie / partenaires
 - [ ] Photos de sorties dans `src/assets/galerie/`
-- [ ] 6 partenaires dans `src/data/partenaires.json` + logos dans `src/assets/partenaires/`
+- [~] Partenaires repris de l'ancien site (2015, **à confirmer**) : Les Mosaïques du Sud, Gacon Thermique, Fabien Baudoin,
+      Laurent Sandrine — sans logo ni lien (lesmosaiquesdusud.fr ne répond plus). Logos dans `src/assets/partenaires/`
 
 ## `src/pages/mentions-legales.astro`
 - [ ] Compléter tous les `[...]` (voir les questions posées dans la conversation) : nom complet de

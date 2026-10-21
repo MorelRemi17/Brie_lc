@@ -1,8 +1,6 @@
 [
-  { "nom": "logo partenaire", "logo": "", "lien": "" },
-  { "nom": "logo partenaire", "logo": "", "lien": "" },
-  { "nom": "logo partenaire", "logo": "", "lien": "" },
-  { "nom": "logo partenaire", "logo": "", "lien": "" },
-  { "nom": "logo partenaire", "logo": "", "lien": "" },
-  { "nom": "logo partenaire", "logo": "", "lien": "" }
+  { "nom": "Les Mosaïques du Sud", "logo": "", "lien": "" },
+  { "nom": "Gacon Thermique", "logo": "", "lien": "" },
+  { "nom": "Fabien Baudoin", "logo": "", "lien": "" },
+  { "nom": "Laurent Sandrine", "logo": "", "lien": "" }
 ]
