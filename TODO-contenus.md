@@ -21,7 +21,8 @@
       liens d'inscription et de parcours, texte de présentation
 
 ## `src/content/actus/`
-- [ ] `horaire-hiver.md` : date, texte, photo
+- [ ] Actu « Passage à l'horaire d'hiver : départ 9 h » retirée le 21/10/2026 en attendant la date et le texte :
+      à recréer dans `src/content/actus/` (titre, date, resume, image facultative)
 
 ## Galerie / partenaires
 - [x] Photos de sorties dans `src/assets/galerie/` : 8 photos tirées de l'Instagram du club (21/10/2026)
