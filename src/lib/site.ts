@@ -51,6 +51,9 @@ function chercher(table: Record<string, Module>, dossier: string, nom?: string):
 /** Image de src/assets/photos/ par son nom de fichier. */
 export const photo = (nom?: string) => chercher(photos, 'photos', nom);
 
+/** Logo du club : image par défaut d'une actu ou d'un événement sans photo. */
+export const logoClub = photo('logo.png');
+
 /** Logo de src/assets/partenaires/ par son nom de fichier. */
 export const logoPartenaire = (nom?: string) => chercher(logos, 'partenaires', nom);
 
@@ -168,8 +171,16 @@ export interface Carte {
   dateTexte: string;
   resume?: string;
   image?: ImageMetadata;
+  /** vrai quand l'image est le logo du club, faute de photo */
+  parDefaut: boolean;
   cadrage?: string;
   href?: string;
+}
+
+/** La photo si elle existe, sinon le logo du club. */
+function imageOuLogo(nom?: string) {
+  const image = photo(nom);
+  return { image: image ?? logoClub, parDefaut: !image && !!logoClub };
 }
 
 function carteEvenement(e: Evenement, aVenir: boolean): Carte {
@@ -180,7 +191,7 @@ function carteEvenement(e: Evenement, aVenir: boolean): Carte {
     date: e.data.date,
     dateTexte: dateEvenement(e),
     resume: e.data.resume,
-    image: photo(e.data.affiche),
+    ...imageOuLogo(e.data.affiche),
     // Les affiches sont en portrait : on garde le haut (titre de l'affiche)
     cadrage: 'center 20%',
     href: `/evenements/${e.id}/`,
@@ -195,7 +206,7 @@ function carteActu(a: CollectionEntry<'actus'>): Carte {
     date: a.data.date,
     dateTexte: a.data.date ? dateLongue(a.data.date) : a.data.dateTexte,
     resume: a.data.resume,
-    image: photo(a.data.image),
+    ...imageOuLogo(a.data.image),
     cadrage: a.data.cadrage,
     href: lien(a.data.lien),
   };

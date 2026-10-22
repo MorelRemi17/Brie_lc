@@ -110,8 +110,9 @@ mélangés, du plus récent au plus ancien. La page `/evenements/` (« Actus et 
   Les autres sont appelées par leur nom dans les fichiers de contenu.
 - Astro optimise tout au build (WebP, plusieurs tailles). Tu peux envoyer les photos telles quelles, mais
   évite les fichiers de plus de 5 Mo.
-- Une image introuvable ne casse pas le build : un bloc hachuré s'affiche à la place, et un avertissement
-  apparaît dans le log de build.
+- Une actu ou un événement sans photo affiche le logo du club à la place.
+- Une image introuvable ne casse pas le build : le logo du club (cartes et pages d'événement) ou un bloc
+  hachuré (ailleurs) s'affiche à la place, et un avertissement apparaît dans le log de build.
 
 ## `src/data/*.json`
 

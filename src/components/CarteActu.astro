@@ -8,7 +8,7 @@ interface Props {
 const { carte: c } = Astro.props;
 ---
 <article class:list={['actu', { 'actu--a-venir': c.aVenir }]}>
-  <Photo src={c.image} alt={c.titre} class="actu__image" aVenir={c.aVenir ? "affiche de l'événement" : "photo de l'actu"} cadrage={c.cadrage} />
+  <Photo src={c.image} alt={c.titre} class:list={['actu__image', { 'image-logo': c.parDefaut }]} aVenir={c.aVenir ? "affiche de l'événement" : "photo de l'actu"} cadrage={c.parDefaut ? undefined : c.cadrage} />
   <div class="actu__corps">
     <div class="actu__meta">
       {c.aVenir && <span class="actu__badge">À venir</span>}

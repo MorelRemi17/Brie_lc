@@ -107,6 +107,8 @@ a.info__valeur:hover { color: var(--vert-fonce); }
   font: 500 13px ui-monospace, monospace; color: #5b6259; padding: 16px;
 }
 
+/* Logo du club à la place d'une photo manquante : affiché en entier, sans rognage */
+.image-logo { object-fit: contain !important; object-position: center !important; background: var(--blanc); padding: 24px; }
 
 /* ============================================================
    HEADER
